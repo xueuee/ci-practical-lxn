@@ -6,7 +6,8 @@ def add(a, b):
 
 
 def subtract(a, b):
-    return a + b
+    # Keep subtraction distinct from addition.
+    return a - b
 
 
 def divide(a, b):
