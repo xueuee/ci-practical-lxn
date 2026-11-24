@@ -1,0 +1,43 @@
+name: Calculator CI
+run-name: CI - LXN | ${{ github.event_name }} | ${{ github.ref_name }}
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  STUDENT_INITIALS: LXN
+
+jobs:
+  test:
+    name: Test calculator
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Show run identity
+        shell: pwsh
+        run: |
+          Write-Output "Student initials: $env:STUDENT_INITIALS"
+          Write-Output "Repository: $env:GITHUB_REPOSITORY"
+          Write-Output "Event: $env:GITHUB_EVENT_NAME"
+          Write-Output "Ref: $env:GITHUB_REF"
+          Write-Output "Commit: $env:GITHUB_SHA"
+          Write-Output "Run ID: $env:GITHUB_RUN_ID"
+          python --version
+
+      - name: Run automated tests
+        run: python -m unittest discover -s . -p "test_*.py" -v
